@@ -15,3 +15,24 @@ Table of Contents (placeholder — build out as sections are written)
  Lessons Learned
 
 (Full README to follow once Phase 1 pilot results are in — see project-scope.md for current project status and decisions made to date.)
+
+## Local Environment Security (Pre-Pilot Setup)
+
+Before any PHI sample files were downloaded to this machine, the local storage
+environment was hardened to meet the project's privacy requirements:
+
+- **Encryption at rest:** Confirmed BitLocker is enabled on the C: drive
+  (`ProtectionStatus: On`), so data is encrypted on disk.
+- **No cloud sync exposure:** Working directory (`C:\SecureWork\macbraces_pilot\`)
+  was created outside the OneDrive sync root (`C:\Users\Leah\OneDrive\`), verified
+  via the OneDrive account registry key, to ensure sample files are never
+  uploaded to a third-party cloud service.
+- **Restricted local access:** Default NTFS permissions on the working directory
+  inherited broad local access (`BUILTIN\Users` read/execute, `Authenticated Users`
+  modify). Inheritance was removed and permissions were reset via `icacls` to grant
+  access only to the local account performing the work, `SYSTEM`, and
+  `Administrators` — no other local account on the machine can read or write to
+  this folder.
+
+This satisfies the Phase 1 storage requirement (encrypted, non-cloud-synced,
+single-user-restricted) prior to any PHI sample download.
